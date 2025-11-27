@@ -111,7 +111,7 @@
 
 @push('scripts')
 <script>
-// Fungsi untuk memetakan persentase ke class lebar Tailwind
+
 function getTailwindWidthClass(percentage) {
     if (percentage >= 100) return 'w-full';
     if (percentage > 90) return 'w-[95%]';
@@ -128,12 +128,12 @@ function getTailwindWidthClass(percentage) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Targetkan checkbox
+    
     const checkboxes = document.querySelectorAll('.lesson-checkbox');
     const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
     
     checkboxes.forEach(checkbox => {
-        // Gunakan event 'change' pada checkbox
+       
         checkbox.addEventListener('change', function() {
             const progressId = this.dataset.progressId;
             const isChecked = this.checked; 
@@ -159,19 +159,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const newWidthClass = getTailwindWidthClass(data.progress_percentage);
                     
-                    // Update Progress Bar
+                    
                     progressBar.className = progressBar.className.replace(/w-\[\d+%\]|w-\d\/\d|w-\d\/\d|w-full|w-0/g, ''); 
                     progressBar.classList.add(newWidthClass); 
                     
                     progressPercentageElement.textContent = data.progress_percentage + '%';
                     completedCount.textContent = data.completed_count;
 
-                    // Update UI Lesson Status
+                   
                     if (data.is_completed) {
                         lessonTitle.classList.add('line-through', 'text-gray-500');
                         lessonTitle.classList.remove('text-gray-800');
                         
-                        // Tambahkan Badge Completed
+                     
                         const badge = document.createElement('span');
                         badge.className = 'bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full badge-completed ml-3';
                         badge.innerHTML = '<i class="fas fa-check mr-1"></i>Completed';
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         lessonTitle.classList.remove('line-through', 'text-gray-500');
                         lessonTitle.classList.add('text-gray-800');
                         
-                        // Hapus Badge Completed
+                       
                         let existingBadge = lessonItem.querySelector('.badge-completed');
                         if (existingBadge) existingBadge.remove();
                     }
