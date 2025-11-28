@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class IsiMateri extends Model
+{
+    protected $table = 'tb_isi_materi';
+
+    protected $fillable = [
+        'materi_id',
+        'judul_isi',
+        'konten',
+        'tipe',
+        'file_path',
+    ];
+
+    public function materi()
+    {
+        return $this->belongsTo(Materi::class, 'materi_id');
+    }
+}
+
