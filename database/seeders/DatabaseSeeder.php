@@ -13,6 +13,11 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             UserCourseSeeder::class,
             ReviewSeeder::class,
+            KelasSeeder::class,
+            MateriSeeder::class,
+            IsiMateriSeeder::class,
         ]);
+
+        
     }
 }

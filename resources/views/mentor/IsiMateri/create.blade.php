@@ -2,10 +2,21 @@
 
 @section('content')
 <div class="container">
-    <h3>Tambah Isi Materi untuk {{ $materi->judul_materi }}</h3>
 
-    <form action="{{ route('mentor.isi-materi.store', $materi->id) }}" method="POST">
+    <h2>Tambah Isi Materi</h2>
+
+    <form action="{{ route('isi-materi.store') }}" method="POST">
         @csrf
+
+        <div class="mb-3">
+            <label>Pilih Materi</label>
+            <select name="materi_id" class="form-control" required>
+                <option value="">-- pilih materi --</option>
+                @foreach($materi as $m)
+                    <option value="{{ $m->id }}">{{ $m->judul_materi }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="mb-3">
             <label>Judul Isi</label>
@@ -14,7 +25,7 @@
 
         <div class="mb-3">
             <label>Tipe</label>
-            <select name="tipe" class="form-control">
+            <select name="tipe" class="form-control" required>
                 <option value="text">Text</option>
                 <option value="video">Video</option>
                 <option value="file">File</option>
@@ -27,12 +38,14 @@
         </div>
 
         <div class="mb-3">
-            <label>File Path (jika tipe video/file)</label>
+            <label>File Path (optional)</label>
             <input type="text" name="file_path" class="form-control">
         </div>
 
         <button class="btn btn-primary">Simpan</button>
-        <a href="{{ route('mentor.isi-materi.index', $materi->id) }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('isi-materi.index') }}" class="btn btn-secondary">Kembali</a>
+
     </form>
+
 </div>
 @endsection

@@ -2,10 +2,21 @@
 
 @section('content')
 <div class="container">
-    <h3>Tambah Materi untuk {{ $kelas->nama_kelas }}</h3>
 
-    <form action="{{ route('mentor.materi.store', $kelas->id) }}" method="POST">
+    <h2>Tambah Materi Baru</h2>
+
+    <form action="{{ route('materi.store') }}" method="POST">
         @csrf
+
+        <div class="mb-3">
+            <label>Pilih Kelas</label>
+            <select name="kelas_id" class="form-control" required>
+                <option value="">-- pilih kelas --</option>
+                @foreach($kelas as $k)
+                    <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <div class="mb-3">
             <label>Judul Materi</label>
@@ -14,7 +25,7 @@
 
         <div class="mb-3">
             <label>Deskripsi Materi</label>
-            <textarea name="deskripsi_materi" class="form-control"></textarea>
+            <textarea name="deskripsi_materi" class="form-control" required></textarea>
         </div>
 
         <div class="mb-3">
@@ -23,7 +34,9 @@
         </div>
 
         <button class="btn btn-primary">Simpan</button>
-        <a href="{{ route('mentor.materi.index', $kelas->id) }}" class="btn btn-secondary">Kembali</a>
+        <a href="{{ route('materi.index') }}" class="btn btn-secondary">Kembali</a>
+
     </form>
+
 </div>
 @endsection

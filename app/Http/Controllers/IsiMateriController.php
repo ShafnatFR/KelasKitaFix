@@ -9,74 +9,50 @@ use Illuminate\Http\Request;
 
 class IsiMateriController extends Controller
 {
-    public function index(Materi $materi)
+    public function index()
     {
-        $isi = $materi->isiMateri()->get();
-
-        return view('Mentor.IsiMateri.index', compact('materi', 'isi'));
+        $isi = IsiMateri::with('materi')->get();
+        return view('Mentor.IsiMateri.index', compact('isi'));
     }
 
-    public function create(Materi $materi)
+    public function create()
     {
+        $materi = Materi::whereHas('kelas', function($q){
+            $q->where('mentor_id', auth()->id());
+        })->get();
+
         return view('Mentor.IsiMateri.create', compact('materi'));
     }
 
-    public function store(Request $request, Materi $materi)
+    public function store(Request $request)
     {
         $request->validate([
-            'judul_isi' => 'required|string|max:255',
-            'konten' => 'required|string',
-            'tipe' => 'required|in:text,video,file',
-            'file_path' => 'nullable|string',
+            'materi_id' => 'required',
+            'judul_isi' => 'required',
+            'konten' => 'required',
+            'tipe' => 'required'
         ]);
 
-        IsiMateri::create([
-            'materi_id' => $materi->id,
-            'judul_isi' => $request->judul_isi,
-            'konten' => $request->konten,
-            'tipe' => $request->tipe,
-            'file_path' => $request->file_path,
-        ]);
+        IsiMateri::create($request->all());
 
-        return redirect()
-            ->route('mentor.isi-materi.index', $materi->id)
-            ->with('success', 'Isi materi berhasil ditambahkan.');
+        return redirect()->route('isi-materi.index')->with('success','Isi materi ditambahkan');
     }
 
     public function edit(IsiMateri $isiMateri)
     {
-        $materi = $isiMateri->materi;
-        return view('Mentor.IsiMateri.edit', compact('isiMateri', 'materi'));
+        $materi = Materi::all();
+        return view('Mentor.IsiMateri.edit', compact('isiMateri','materi'));
     }
 
     public function update(Request $request, IsiMateri $isiMateri)
     {
-        $request->validate([
-            'judul_isi' => 'required|string|max:255',
-            'konten' => 'required|string',
-            'tipe' => 'required|in:text,video,file',
-            'file_path' => 'nullable|string',
-        ]);
-
-        $isiMateri->update([
-            'judul_isi' => $request->judul_isi,
-            'konten' => $request->konten,
-            'tipe' => $request->tipe,
-            'file_path' => $request->file_path,
-        ]);
-
-        return redirect()
-            ->route('mentor.isi-materi.index', $isiMateri->materi_id)
-            ->with('success', 'Isi materi berhasil diupdate.');
+        $isiMateri->update($request->all());
+        return redirect()->route('isi-materi.index')->with('success','Isi materi diperbarui');
     }
 
     public function destroy(IsiMateri $isiMateri)
     {
-        $materi_id = $isiMateri->materi_id;
         $isiMateri->delete();
-
-        return redirect()
-            ->route('mentor.isi-materi.index', $materi_id)
-            ->with('success', 'Isi materi berhasil dihapus.');
+        return redirect()->route('isi-materi.index')->with('success','Isi materi dihapus');
     }
 }

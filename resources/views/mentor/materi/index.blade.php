@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container">
-    <h3>Daftar Materi - {{ $kelas->nama_kelas }}</h3>
 
-    <a href="{{ route('mentor.materi.create', $kelas->id) }}" class="btn btn-primary mb-3">+ Tambah Materi</a>
+    <h2>Daftar Materi</h2>
+    <a href="{{ route('materi.create') }}" class="btn btn-primary mb-3">+ Tambah Materi</a>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -13,32 +13,47 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Urutan</th>
+                <th>Kelas</th>
                 <th>Judul</th>
                 <th>Deskripsi</th>
+                <th>Urutan</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
+
         <tbody>
+
             @forelse($materi as $m)
                 <tr>
-                    <td>{{ $m->urutan }}</td>
+                    <td>{{ $m->kelas->nama_kelas }}</td>
                     <td>{{ $m->judul_materi }}</td>
                     <td>{{ $m->deskripsi_materi }}</td>
+                    <td>{{ $m->urutan }}</td>
+                    <td>{{ $m->status }}</td>
                     <td>
-                        <a href="{{ route('mentor.isi-materi.index', $m->id) }}" class="btn btn-sm btn-info">Isi Materi</a>
-                        <a href="{{ route('mentor.materi.edit', $m->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('mentor.materi.destroy', $m->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button onclick="return confirm('Hapus materi?')" class="btn btn-sm btn-danger">Hapus</button>
+
+                        <a href="{{ route('materi.edit', $m->id) }}" class="btn btn-warning btn-sm">Edit</a>
+
+                        <form action="{{ route('materi.destroy', $m->id) }}" method="POST" style="display:inline-block;">
+                            @csrf @method('DELETE')
+                            <button onclick="return confirm('Hapus Materi?')" class="btn btn-danger btn-sm">Hapus</button>
                         </form>
+
+                        <a href="{{ route('isi-materi.index', ['materi_id' => $m->id]) }}" class="btn btn-info btn-sm">
+                            Isi Materi
+                        </a>
+
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="4" class="text-center">Belum ada materi.</td></tr>
+                <tr>
+                    <td colspan="6" class="text-center">Belum ada materi.</td>
+                </tr>
             @endforelse
+
         </tbody>
     </table>
+
 </div>
 @endsection

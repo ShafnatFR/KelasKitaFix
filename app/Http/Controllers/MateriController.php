@@ -9,76 +9,56 @@ use Illuminate\Http\Request;
 
 class MateriController extends Controller
 {
-    // Tampilkan semua materi dalam satu kelas
-    public function index(Kelas $kelas)
+    public function index()
     {
-        // opsional: pastikan kelas ini milik mentor yang login
-        // if ($kelas->mentor_id != auth()->id()) abort(403);
+        $materi = Materi::whereHas('kelas', function($q){
+            $q->where('mentor_id', auth()->id());
+        })->get();
 
-        $materi = $kelas->materi()->orderBy('urutan')->get();
-
-        return view('Mentor.Materi.index', compact('kelas', 'materi'));
+        return view('Mentor.Materi.index', compact('materi'));
     }
 
-    public function create(Kelas $kelas)
+    public function create()
     {
+        $kelas = Kelas::where('mentor_id', auth()->id())->get();
         return view('Mentor.Materi.create', compact('kelas'));
     }
 
-    public function store(Request $request, Kelas $kelas)
+    public function store(Request $request)
     {
         $request->validate([
-            'judul_materi' => 'required|string|max:255',
-            'deskripsi_materi' => 'nullable|string',
-            'urutan' => 'nullable|integer|min:1',
+            'kelas_id' => 'required',
+            'judul_materi' => 'required',
+            'deskripsi_materi' => 'required',
         ]);
 
         Materi::create([
-            'kelas_id' => $kelas->id,
+            'kelas_id' => $request->kelas_id,
             'judul_materi' => $request->judul_materi,
             'deskripsi_materi' => $request->deskripsi_materi,
             'urutan' => $request->urutan ?? 1,
-            'status' => 'draft', // default
+            'status' => 'draft'
         ]);
 
-        return redirect()
-            ->route('mentor.materi.index', $kelas->id)
-            ->with('success', 'Materi berhasil ditambahkan.');
+        return redirect()->route('materi.index')->with('success','Materi berhasil ditambahkan');
     }
 
     public function edit(Materi $materi)
     {
-        $kelas = $materi->kelas;
-        return view('Mentor.Materi.edit', compact('materi', 'kelas'));
+        $kelas = Kelas::where('mentor_id', auth()->id())->get();
+        return view('Mentor.Materi.edit', compact('materi','kelas'));
     }
 
     public function update(Request $request, Materi $materi)
     {
-        $request->validate([
-            'judul_materi' => 'required|string|max:255',
-            'deskripsi_materi' => 'nullable|string',
-            'urutan' => 'nullable|integer|min:1',
-        ]);
+        $materi->update($request->all());
 
-        $materi->update([
-            'judul_materi' => $request->judul_materi,
-            'deskripsi_materi' => $request->deskripsi_materi,
-            'urutan' => $request->urutan ?? $materi->urutan,
-            // status biar diatur admin / proses berikutnya
-        ]);
-
-        return redirect()
-            ->route('mentor.materi.index', $materi->kelas_id)
-            ->with('success', 'Materi berhasil diupdate.');
+        return redirect()->route('materi.index')->with('success','Materi berhasil diperbarui');
     }
 
     public function destroy(Materi $materi)
     {
-        $kelas_id = $materi->kelas_id;
         $materi->delete();
-
-        return redirect()
-            ->route('mentor.materi.index', $kelas_id)
-            ->with('success', 'Materi berhasil dihapus.');
+        return redirect()->route('materi.index')->with('success','Materi berhasil dihapus');
     }
 }
