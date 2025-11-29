@@ -11,9 +11,15 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()->create([
-            'name' => 'Nadia',
-            'email' => 'user@nadia.com',
+            'first_name' => 'Nadia',
+            'last_name' => 'Test',
+            'username' => 'nadia',
+            'no_telepon' => '08123456789',
             'password' => Hash::make('password'),
+            'role' => 'mentor',
+            'status' => 'aktif',
+            'deskripsi' => 'Test user',
+            'fotoProfil' => 'avatar.jpg',
         ]);
 
         User::factory(5)->create();

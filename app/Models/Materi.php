@@ -26,6 +26,6 @@ class Materi extends Model
 
     public function isiMateri()
     {
-        return $this->hasMany(IsiMateri::class, 'materi_id');
+        return $this->hasMany(IsiMateri::class, 'id_materi');
     }
 }

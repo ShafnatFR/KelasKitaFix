@@ -14,7 +14,7 @@ class IsiMateriSeeder extends Seeder
 
         foreach ($materiList as $materi) {
             IsiMateri::factory()->count(3)->create([
-                'materi_id' => $materi->id
+                'id_materi' => $materi->id
             ]);
         }
     }

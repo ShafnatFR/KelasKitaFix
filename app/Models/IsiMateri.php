@@ -12,8 +12,8 @@ class IsiMateri extends Model
     protected $table = 'tb_isi_materi';
 
     protected $fillable = [
-        'materi_id',
-        'judul_isi',
+        'id_materi',
+        'judul',
         'konten',
         'tipe',
         'file_path'
@@ -21,6 +21,6 @@ class IsiMateri extends Model
 
     public function materi()
     {
-        return $this->belongsTo(Materi::class, 'materi_id');
+        return $this->belongsTo(Materi::class, 'id_materi');
     }
 }

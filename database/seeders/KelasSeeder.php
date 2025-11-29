@@ -9,6 +9,9 @@ class KelasSeeder extends Seeder
 {
     public function run(): void
     {
-        Kelas::factory()->count(5)->create();
+        Kelas::factory()->count(5)->create([
+    'mentor_id' => 1
+]);
+
     }
 }

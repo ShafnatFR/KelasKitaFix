@@ -12,15 +12,23 @@ class User extends Authenticatable // <-- PENTING!
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'tb_users';
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'first_name',
+        'last_name',
+        'username',
+        'no_telepon',
         'password',
+        'role',
+        'status',
+        'deskripsi',
+        'fotoProfil',
     ];
 
     /**
@@ -30,7 +38,6 @@ class User extends Authenticatable // <-- PENTING!
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -39,7 +46,6 @@ class User extends Authenticatable // <-- PENTING!
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 }

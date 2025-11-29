@@ -12,7 +12,7 @@ class ReviewSeeder extends Seeder
     public function run()
     {
         
-        $userNadia = User::where('email', 'user@nadia.com')->first(); 
+        $userNadia = User::first(); 
         $userFactory1 = User::skip(1)->first(); 
         $userFactory2 = User::skip(2)->first(); 
         $userFactory3 = User::skip(3)->first(); 
