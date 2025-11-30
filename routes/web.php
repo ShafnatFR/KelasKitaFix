@@ -6,6 +6,8 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserCourseController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
+require __DIR__.'/auth.php';
+require __DIR__.'/Mentor.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,9 +35,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/courses/{courseId}/reviews', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/courses/{courseId}/reviews', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
-
-require __DIR__.'/auth.php';
-
 
 Route::middleware(['auth'])->group(function () {
 

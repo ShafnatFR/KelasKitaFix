@@ -4,24 +4,37 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     public function run()
     {
-        User::factory()->create([
+        // User mentor default (ID = 1)
+        User::create([
             'first_name' => 'Nadia',
-            'last_name' => 'Test',
-            'username' => 'nadia',
-            'no_telepon' => '08123456789',
-            'password' => Hash::make('password'),
+            'last_name' => 'Mentor',
+            'username' => 'nadia_mentor',
+            'no_telepon' => '081234567890',
+            'password' => 'password', // otomatis hashed karena $casts
             'role' => 'mentor',
             'status' => 'aktif',
-            'deskripsi' => 'Test user',
-            'fotoProfil' => 'avatar.jpg',
+            'deskripsi' => 'Mentor default untuk seeding.',
+            'fotoProfil' => 'default.png',
         ]);
 
-        User::factory(5)->create();
+        // Tambahkan 5 user murid dummy
+        for ($i = 1; $i <= 5; $i++) {
+            User::create([
+                'first_name' => fake()->firstName(),
+                'last_name' => fake()->lastName(),
+                'username' => fake()->unique()->userName(),
+                'no_telepon' => fake()->phoneNumber(),
+                'password' => 'password',
+                'role' => 'murid',
+                'status' => 'aktif',
+                'deskripsi' => fake()->sentence(),
+                'fotoProfil' => 'default.png',
+            ]);
+        }
     }
 }
